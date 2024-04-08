@@ -10,13 +10,13 @@ class PepSpider(scrapy.Spider):
 
     def parse_pep(self, response):
         number, name = response.xpath(
-            '//h1[@class="page-title"]/text()'
+            '//h1[contains(@class, "page-title")]/text()'
         ).get().split(' – ', 1)
 
         status = response.xpath(
             '//dl[contains(@class, "rfc2822")]'
-            '/dt[contains(text(), "Status")]'
-            '/following-sibling::dd/abbr/text()'
+            '//dt[normalize-space(.)="Status:"]'
+            '/following-sibling::dd[1]//text()'
         ).get()
 
         yield PepParseItem(
@@ -28,9 +28,9 @@ class PepSpider(scrapy.Spider):
         )
 
     def parse(self, response):
-        peps = response.xpath('//section[@id="numerical-index"]/*/tbody/tr')
-        pep_links = peps.xpath(
-            'td/a[contains(@class, "pep")]/@href').getall()
+        pep_links = response.xpath(
+            '//section[@id="numerical-index"]//td[2]//@href'
+        ).getall()
 
         for link in pep_links:
             yield response.follow(link, callback=self.parse_pep)
