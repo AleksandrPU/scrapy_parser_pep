@@ -1,9 +1,12 @@
+import logging
+
 BOT_NAME = 'pep_parse'
 
 SPIDER_MODULES = ['pep_parse.spiders']
 NEWSPIDER_MODULE = 'pep_parse.spiders'
 
 ROBOTSTXT_OBEY = True
+USER_AGENT = 'Scrapy/VERSION (+https://scrapy.org)'
 
 TELNETCONSOLE_ENABLED = False
 
@@ -18,3 +21,5 @@ FEEDS = {
         'overwrite': True,
     },
 }
+
+LOG_LEVEL = logging.INFO
