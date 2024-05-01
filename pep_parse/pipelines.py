@@ -3,13 +3,15 @@ from collections import defaultdict
 from datetime import datetime as dt
 from pathlib import Path
 
-
 BASE_DIR = Path(__file__).parent.parent
 
 
 class PepParsePipeline:
-    def open_spider(self, spider):
+    def __init__(self):
         self.statuses = defaultdict(int)
+
+    def open_spider(self, spider):
+        pass
 
     def process_item(self, item, spider):
         self.statuses[item['status']] += 1
