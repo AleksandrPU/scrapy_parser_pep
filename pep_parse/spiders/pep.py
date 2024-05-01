@@ -1,4 +1,5 @@
 import scrapy
+from tqdm.asyncio import tqdm
 
 from pep_parse.items import PepParseItem
 
@@ -27,10 +28,10 @@ class PepSpider(scrapy.Spider):
             }
         )
 
-    def parse(self, response):
+    def parse(self, response, **kwargs):
         pep_links = response.xpath(
             '//section[@id="numerical-index"]//td[2]//@href'
         ).getall()
 
-        for link in pep_links:
+        for link in tqdm(pep_links):
             yield response.follow(link, callback=self.parse_pep)
